@@ -1,0 +1,39 @@
+mutation CreateContactRequest($userId: UUID!, $message: String!, $senderEmail: String!, $senderName: String!, $subject: String) @auth(level: USER) {
+  contactRequest_insert(data: {
+    userId: $userId,
+    message: $message,
+    senderEmail: $senderEmail,
+    senderName: $senderName,
+    subject: $subject,
+    createdAt_expr: "request.time"
+  })
+}
+
+query ListProjects @auth(level: PUBLIC, insecureReason: "This query is safe to expose to the public") {
+  projects {
+    id
+    title
+    description
+    imageUrl
+  }
+}
+
+mutation UpdateSkill($id: UUID!, $name: String, $proficiencyLevel: String) @auth(level: USER) {
+  skill_update(
+    key: { id: $id }
+    data: {
+      name: $name
+      proficiencyLevel: $proficiencyLevel
+    }
+  )
+}
+
+query GetUser @auth(level: USER) {
+  user(key: { id_expr: "auth.uid" }) {
+    id
+    name
+    email
+    bio
+    profilePictureUrl
+  }
+}

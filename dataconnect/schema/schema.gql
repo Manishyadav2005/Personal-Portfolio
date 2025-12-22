@@ -1,0 +1,37 @@
+type User @table {
+  name: String!
+  email: String!
+  createdAt: Timestamp!
+  bio: String
+  profilePictureUrl: String
+  linkedinUrl: String
+  githubUrl: String
+  websiteUrl: String
+}
+
+type Project @table {
+  user: User!
+  title: String!
+  description: String!
+  createdAt: Timestamp!
+  projectUrl: String
+  githubRepoUrl: String
+  imageUrl: String
+  featured: Boolean
+}
+
+type Skill @table {
+  user: User!
+  name: String!
+  category: String!
+  proficiencyLevel: String
+}
+
+type ContactRequest @table {
+  user: User!
+  senderName: String!
+  senderEmail: String!
+  message: String!
+  createdAt: Timestamp!
+  subject: String
+}

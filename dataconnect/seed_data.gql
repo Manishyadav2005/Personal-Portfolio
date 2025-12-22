@@ -1,0 +1,64 @@
+mutation SeedDatabase @auth(level: USER, insecureReason: "This mutation is safe to expose to all logged in users.") {
+  user_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      name: "Demo User 1",
+      email: "demo1@example.com",
+      createdAt: "2024-01-01T00:00:00Z"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      name: "Demo User 2",
+      email: "demo2@example.com",
+      createdAt: "2024-01-02T00:00:00Z"
+    }
+  ])
+  project_insertMany(data: [
+    {
+      id: "660e8400-e29b-41d4-a716-446655440000",
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      title: "Demo Project 1",
+      description: "Demo project description 1",
+      createdAt: "2024-01-03T00:00:00Z"
+    },
+    {
+      id: "660e8400-e29b-41d4-a716-446655440001",
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      title: "Demo Project 2",
+      description: "Demo project description 2",
+      createdAt: "2024-01-04T00:00:00Z"
+    }
+  ])
+  skill_insertMany(data: [
+    {
+      id: "770e8400-e29b-41d4-a716-446655440000",
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      name: "Demo Skill 1",
+      category: "Demo Category 1"
+    },
+    {
+      id: "770e8400-e29b-41d4-a716-446655440001",
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      name: "Demo Skill 2",
+      category: "Demo Category 2"
+    }
+  ])
+  contactRequest_insertMany(data: [
+    {
+      id: "880e8400-e29b-41d4-a716-446655440000",
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      createdAt: "2024-01-05T00:00:00Z",
+      message: "Demo Contact Request 1",
+      senderEmail: "sender1@example.com",
+      senderName: "Sender 1"
+    },
+    {
+      id: "880e8400-e29b-41d4-a716-446655440001",
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      createdAt: "2024-01-06T00:00:00Z",
+      message: "Demo Contact Request 2",
+      senderEmail: "sender2@example.com",
+      senderName: "Sender 2"
+    }
+  ])
+}
