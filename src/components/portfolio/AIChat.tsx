@@ -1,6 +1,6 @@
 import aira from "@/assets/aira.png";
 import { useState, useRef, useEffect } from "react";
-import { Menu, ArrowLeft, Mic, Square, Trash2, Plus, ArrowUp } from "lucide-react";
+import { Menu, ArrowLeft, Mic, Square, Trash2, Plus, ArrowUp, Volume2, VolumeX } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AIChatSidebar from "./AIChatSidebar";
 import { speak, stopSpeaking } from "@/utils/speak";
@@ -69,6 +69,8 @@ const AIChat = () => {
   const liveClientRef = useRef<GeminiLiveClient | null>(null);
 
   const [typingIndex, setTypingIndex] = useState<number | null>(null);
+  const [speakingMessageIndex, setSpeakingMessageIndex] = useState<number | null>(null);
+  const [voiceSubtitle, setVoiceSubtitle] = useState("");
   const [showQuickMenu, setShowQuickMenu] = useState(false);
   const [isDictating, setIsDictating] = useState(false);
   const dictationRef = useRef<any>(null);
@@ -308,23 +310,27 @@ const AIChat = () => {
 
   // 🔊 MS AIRA welcome voice (click only)
   const speakWelcome = () => {
-    setIsSpeakingState(true);
-    if (liveClientRef.current && liveClientRef.current.getIsConnected()) {
-      liveClientRef.current.sendTextMessage(
-        "Hello! Please introduce yourself warmly and sweetly as MS AIRA, proudly stating that you were created by Manish Yadav, and welcome the user to his portfolio."
-      );
-    } else {
-      speak(
-        "Hello! I am MS AIRA, proudly created by Manish Yadav. Manish is a passionate and talented software developer specializing in full-stack web development and AI. Welcome to his portfolio! What would you like to know about him today? 😊",
-        () => setIsSpeakingState(false)
-      );
+    if (isSpeakingState) {
+      handleStopSpeaking();
+      return;
     }
+    const welcomeMsg =
+      "Namaste! Hello! I am MS AIRA, proudly created by Manish Yadav. Manish is a talented and passionate software developer specializing in full-stack web development and AI. Welcome to his portfolio! Please feel free to ask me anything about his projects, skills, or experience — I would be delighted to assist you! 😊";
+    setIsSpeakingState(true);
+    setSpeakingMessageIndex(-1);
+    setVoiceSubtitle(welcomeMsg);
+    speak(welcomeMsg, () => {
+      setIsSpeakingState(false);
+      setSpeakingMessageIndex(null);
+    });
   };
 
   // 🧹 Clear chat
   const clearChat = () => {
     setMessages([]);
     setTypingIndex(null);
+    setVoiceSubtitle("");
+    handleStopSpeaking();
   };
 
   // 🎙️ Start / Stop voice input
@@ -351,11 +357,11 @@ const AIChat = () => {
     recognition.maxAlternatives = 1;
 
     recognition.onstart = () => setIsListening(true);
-   recognition.onresult = (event: any) => {
-  const transcript = event.results[0][0].transcript;
-  setIsListening(false);
-  askAI(transcript, true); // ← directly bhejo, input mein mat daalo
-};
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setIsListening(false);
+      askAI(transcript, true);
+    };
     recognition.onerror = () => setIsListening(false);
     recognition.onend = () => setIsListening(false);
     recognition.start();
@@ -366,6 +372,8 @@ const AIChat = () => {
     liveClientRef.current?.stopSpeaking();
     stopSpeaking();
     setIsSpeakingState(false);
+    setSpeakingMessageIndex(null);
+    setVoiceSubtitle("");
     stopContinuousVoice();
   };
 
@@ -385,10 +393,13 @@ const AIChat = () => {
     isLoadingRef.current = true;
     setLoading(true);
 
-    const updatedMessages = [...messages, `You:${question}`];
-    setMessages(updatedMessages);
+    if (!fromVoice) {
+      const updatedMessages = [...messages, `You:${question}`];
+      setMessages(updatedMessages);
+    } else {
+      setVoiceSubtitle(`Listening to: "${question}"...`);
+    }
     setInput("");
-    setLoading(true);
 
     try {
       const customApi = (import.meta as any).env?.VITE_API_URL;
@@ -404,11 +415,15 @@ const AIChat = () => {
       let replyText = "";
       for (const endpoint of endpoints) {
         try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 4500);
           const res = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message: question }),
+            signal: controller.signal,
           });
+          clearTimeout(timeoutId);
           const data = await res.json();
           if (data && data.reply && !data.reply.includes("technical issue")) {
             replyText = data.reply;
@@ -424,28 +439,31 @@ const AIChat = () => {
       const finalReply =
         replyText ||
         "There seems to be a technical issue right now. Please try again shortly!";
-      const newMessages = [...updatedMessages, `AI:${finalReply}`];
-      setMessages(newMessages);
 
-      // ✍️ Start typewriter on the latest AI message
-      setTypingIndex(newMessages.length - 1);
+      if (!fromVoice) {
+        const newMessages = [...messages, `You:${question}`, `AI:${finalReply}`];
+        setMessages(newMessages);
+        setTypingIndex(newMessages.length - 1);
+      } else {
+        setVoiceSubtitle(finalReply);
+      }
 
-      // 🔊 Auto-speak using Gemini Live 24kHz AudioPlayer
+      // 🔊 Auto-speak using sweet natural Indian female voice
       if (fromVoice) {
         isLoadingRef.current = false;
         isSpeakingRef.current = true;
         setIsSpeakingState(true);
 
-        if (liveClientRef.current && liveClientRef.current.getIsConnected()) {
-          liveClientRef.current.sendTextMessage(question);
-        } else {
-          speak(finalReply, handleAudioFinished);
-        }
+        speak(finalReply, handleAudioFinished);
       } else {
         isLoadingRef.current = false;
       }
     } catch {
-      setMessages((prev) => [...prev, "AI:Something went wrong. Please try again."]);
+      if (!fromVoice) {
+        setMessages((prev) => [...prev, "AI:Something went wrong. Please try again."]);
+      } else {
+        setVoiceSubtitle("Something went wrong. Please try speaking again.");
+      }
       isLoadingRef.current = false;
       if (isContinuousVoiceRef.current) {
         handleAudioFinished();
@@ -488,25 +506,93 @@ const AIChat = () => {
           </div>
         </div>
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 md:px-6 py-6 space-y-4">
+        {/* Messages / Avatar Area */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 md:px-6 py-2 md:py-4 space-y-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
 
-          {/* Welcome Intro */}
-          {messages.length === 0 && (
-            <div className="flex flex-col items-center justify-center min-h-[55vh] text-center gap-4 py-8">
-              <img
-                src={aira}
-                alt="MS AIRA"
-                onClick={speakWelcome}
-                className="w-40 h-40 rounded-full object-cover cursor-pointer border-4 border-purple-500 shadow-[0_0_40px_rgba(168,85,247,0.6)] animate-float hover:scale-105 transition"
-              />
-              <h3 className="text-xl font-semibold text-purple-400">MS AIRA</h3>
-              <p className="text-gray-400 max-w-md text-sm md:text-base">Click on me for a quick introduction.</p>
+          {/* Interactive Talking Avatar Display (Visible on Welcome Screen & during Voice Mode) */}
+          {(messages.length === 0 || isContinuousVoice) && (
+            <div className="flex flex-col items-center justify-center min-h-[46vh] text-center gap-3 py-2 select-none animate-in fade-in transition-all">
+              {/* Floating Talking Avatar with Dynamic Aura Rings */}
+              <div className="relative flex items-center justify-center">
+                {/* Multi-layered speaking soundwave aura */}
+                {isSpeakingState && (
+                  <>
+                    <div className="absolute -inset-5 rounded-full bg-gradient-to-r from-purple-600/35 via-pink-500/35 to-blue-500/35 blur-2xl animate-pulse pointer-events-none" />
+                    <div className="absolute -inset-2.5 rounded-full border-2 border-purple-400/70 animate-ping opacity-60 pointer-events-none" />
+                    <div className="absolute -inset-6 rounded-full border border-purple-500/30 animate-pulse pointer-events-none" />
+                  </>
+                )}
+
+                {/* Listening aura when user speaks */}
+                {isListening && !isSpeakingState && (
+                  <>
+                    <div className="absolute -inset-4 rounded-full bg-blue-500/30 blur-xl animate-pulse pointer-events-none" />
+                    <div className="absolute -inset-2.5 rounded-full border-2 border-blue-400/50 animate-ping opacity-40 pointer-events-none" />
+                  </>
+                )}
+
+                <img
+                  src={aira}
+                  alt="MS AIRA"
+                  onClick={speakWelcome}
+                  className={`w-36 h-36 md:w-44 md:h-44 rounded-full object-cover cursor-pointer border-4 transition-all duration-300 z-10 ${
+                    isSpeakingState
+                      ? "border-purple-400 shadow-[0_0_55px_rgba(168,85,247,0.95)] animate-talking scale-105"
+                      : isListening
+                      ? "border-blue-400 shadow-[0_0_35px_rgba(59,130,246,0.85)] scale-102"
+                      : "border-purple-500/70 shadow-[0_0_30px_rgba(168,85,247,0.5)] animate-float hover:scale-105"
+                  }`}
+                />
+              </div>
+
+              {/* Dynamic Sound Wave Bars when speaking */}
+              {isSpeakingState && (
+                <div className="flex items-center justify-center gap-1.5 h-5">
+                  <span className="w-1 bg-purple-400 rounded-full animate-[pulse_0.4s_ease-in-out_infinite] h-2.5" />
+                  <span className="w-1 bg-pink-400 rounded-full animate-[pulse_0.6s_ease-in-out_infinite] h-5" />
+                  <span className="w-1 bg-purple-300 rounded-full animate-[pulse_0.3s_ease-in-out_infinite] h-3.5" />
+                  <span className="w-1 bg-blue-400 rounded-full animate-[pulse_0.5s_ease-in-out_infinite] h-5" />
+                  <span className="w-1 bg-pink-300 rounded-full animate-[pulse_0.4s_ease-in-out_infinite] h-3.5" />
+                  <span className="w-1 bg-purple-400 rounded-full animate-[pulse_0.6s_ease-in-out_infinite] h-2.5" />
+                </div>
+              )}
+
+              {/* Title & Status */}
+              <div className="flex flex-col items-center gap-1 px-4">
+                <h3 className="text-lg md:text-xl font-semibold text-purple-400 flex items-center justify-center gap-2">
+                  MS AIRA
+                  {isSpeakingState && (
+                    <span className="text-[11px] font-normal px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 animate-pulse">
+                      Speaking...
+                    </span>
+                  )}
+                  {isListening && !isSpeakingState && (
+                    <span className="text-[11px] font-normal px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 animate-pulse">
+                      Listening...
+                    </span>
+                  )}
+                </h3>
+
+                {/* Subtitle Caption */}
+                {voiceSubtitle ? (
+                  <div className="max-w-md md:max-w-lg mt-1 px-4 py-2 rounded-xl bg-zinc-900/90 border border-purple-500/30 shadow-xl backdrop-blur-md animate-in fade-in transition-all">
+                    <p className="text-xs md:text-sm text-gray-200 leading-relaxed max-h-24 overflow-y-auto">
+                      "{voiceSubtitle}"
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-gray-400 max-w-md text-xs md:text-sm mt-0.5">
+                    {isContinuousVoice
+                      ? "I am listening to your voice. Speak anytime!"
+                      : "Click on me for a quick introduction, or tap the blue wave button to speak!"}
+                  </p>
+                )}
+              </div>
             </div>
           )}
 
-          {/* Chat Bubbles */}
-          {messages.map((msg, i) => {
+          {/* Chat Bubbles (Visible when text typing mode is active) */}
+          {!isContinuousVoice && messages.map((msg, i) => {
             const isUser = msg.startsWith("You:");
             const text = msg.replace("You:", "").replace("AI:", "");
             const isTyping = !isUser && typingIndex === i;
@@ -545,6 +631,42 @@ const AIChat = () => {
                     />
                   ) : (
                     <span className="whitespace-pre-wrap break-words">{text}</span>
+                  )}
+
+                  {/* 🔊 Natural Female Voice Listen Button */}
+                  {!isUser && !isTyping && (
+                    <div className="mt-2 pt-1 border-t border-white/10 flex items-center justify-end">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (speakingMessageIndex === i) {
+                            handleStopSpeaking();
+                          } else {
+                            handleStopSpeaking();
+                            setSpeakingMessageIndex(i);
+                            setIsSpeakingState(true);
+                            speak(text, () => {
+                              setIsSpeakingState(false);
+                              setSpeakingMessageIndex(null);
+                            });
+                          }
+                        }}
+                        title={speakingMessageIndex === i ? "Stop speaking" : "Listen in natural female voice"}
+                        className="text-gray-400 hover:text-purple-300 p-1 rounded-md transition flex items-center gap-1.5 text-xs active:scale-95"
+                      >
+                        {speakingMessageIndex === i ? (
+                          <>
+                            <VolumeX size={13} className="text-purple-400 animate-pulse" />
+                            <span className="text-[11px] text-purple-400 font-medium">Stop</span>
+                          </>
+                        ) : (
+                          <>
+                            <Volume2 size={13} />
+                            <span className="text-[11px]">Listen</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
@@ -636,7 +758,7 @@ const AIChat = () => {
                       : isSpeakingState
                       ? "MS AIRA is speaking..."
                       : isContinuousVoice
-                      ? "Continuous voice active... Boliye!"
+                      ? "Continuous voice active... Speak now!"
                       : "Ask anything"
                   }
                   rows={1}

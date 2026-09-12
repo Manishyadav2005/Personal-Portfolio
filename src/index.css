@@ -374,3 +374,27 @@ html, body {
     --angle: 360deg;
   }
 }
+
+@keyframes talking-pulse {
+  0%, 100% {
+    transform: scale(1.02) translateY(0);
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.75);
+  }
+  25% {
+    transform: scale(1.07) translateY(-5px);
+    box-shadow: 0 0 65px rgba(236, 72, 153, 0.9);
+  }
+  50% {
+    transform: scale(1.03) translateY(3px);
+    box-shadow: 0 0 50px rgba(168, 85, 247, 0.85);
+  }
+  75% {
+    transform: scale(1.08) translateY(-7px);
+    box-shadow: 0 0 75px rgba(147, 51, 234, 0.95);
+  }
+}
+
+.animate-talking {
+  animation: talking-pulse 1.3s ease-in-out infinite;
+}
+
