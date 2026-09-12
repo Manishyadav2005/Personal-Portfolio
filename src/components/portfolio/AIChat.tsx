@@ -342,11 +342,12 @@ const AIChat = () => {
       const customApi = (import.meta as any).env?.VITE_API_URL;
       const isLocal =
         window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-      const endpoints = [
-        ...(customApi ? [customApi] : []),
-        ...(isLocal ? ["http://localhost:3000/api/chat"] : []),
-        "https://ai-backend-wine-seven.vercel.app/api/chat",
-      ].filter((v, i, a) => a.indexOf(v) === i);
+      const endpoints = isLocal
+        ? [customApi || "http://localhost:3000/api/chat", "https://ai-backend-wine-seven.vercel.app/api/chat"]
+        : [
+            ...(customApi && !customApi.includes("localhost") ? [customApi] : []),
+            "https://ai-backend-wine-seven.vercel.app/api/chat",
+          ];
 
       let replyText = "";
       for (const endpoint of endpoints) {
