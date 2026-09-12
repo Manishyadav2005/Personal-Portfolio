@@ -1,0 +1,14 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Manish Yadav
+TITLE:Software Engineer
+ORG:MS Portfolio
+TEL;TYPE=CELL:+916390496008
+EMAIL:ymanish6390@gmail.com
+URL:https://manish.page/
+URL:https://www.linkedin.com/in/manish-yadav-644062267/
+URL:https://github.com/Manishyadav2005
+ADR:Lucknow;Uttar Pradesh;India
+NOTE:Software Engineer | Web Developer | Java Developer | DevOps | AI Enthusiast
+PHOTO;VALUE=URI:https://manish.page/profile-photo.png
+END:VCARD

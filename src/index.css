@@ -78,12 +78,8 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
-    background-image: 
-      radial-gradient(ellipse at top right, hsl(var(--primary) / 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom left, hsl(var(--glow-purple) / 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, hsl(var(--background)) 0%, hsl(var(--background)) 100%);
-    background-attachment: fixed;
+    @apply bg-black text-foreground font-sans;
+    background-color: #000000;
   }
 
   html {
@@ -348,5 +344,33 @@
   }
   100% {
     background-position: 200% 0;
+  }
+}
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spin-border {
+  0% {
+    --angle: 0deg;
+  }
+  100% {
+    --angle: 360deg;
   }
 }

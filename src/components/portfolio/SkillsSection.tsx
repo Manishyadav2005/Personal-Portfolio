@@ -38,6 +38,7 @@ const skillCategories = [
     skills: [
       { name: 'MySQL', icon: Database },
       { name: 'MongoDB', icon: Server },
+      { name: 'Firestore', icon: Database },
     ],
   },
   {
@@ -49,10 +50,9 @@ const skillCategories = [
       { name: 'Git', icon: GitBranch },
       { name: 'GitHub', icon: Github },
       { name: 'VS Code', icon: Monitor },
-      { name: 'PyCharm', icon: Terminal },
-      { name: 'Windows OS', icon: Monitor },
+     { name: 'Firebase', icon: Server },
       { name: 'Kali Linux', icon: Terminal },
-      { name: 'MS Word', icon: FileText },
+     { name: 'Cloudinary', icon: Server },
       { name: 'MS Excel', icon: Sheet },
     ],
   },
@@ -95,12 +95,7 @@ const chipVariants = {
 
 const SkillsSection = () => {
   return (
-    <section id="skills" className="py-24 relative overflow-hidden">
-      {/* Futuristic gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a1a] via-[#1a1035] to-[#0d1525]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-orange-900/10 via-transparent to-transparent" />
-      
+    <section id="skills" className="py-24 relative overflow-hidden bg-transparent">
       {/* Floating particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
@@ -123,9 +118,6 @@ const SkillsSection = () => {
           />
         ))}
       </div>
-      
-      {/* Subtle grid pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
@@ -136,7 +128,7 @@ const SkillsSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full text-primary font-medium text-sm mb-6">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-transparent border border-primary/40 rounded-full text-primary font-medium text-sm mb-6 shadow-glow">
             <Code className="w-4 h-4" />
             Technical Expertise
           </span>
@@ -150,7 +142,7 @@ const SkillsSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3 }}
           />
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)] text-lg max-w-2xl mx-auto font-normal">
             A categorized overview of the technologies and tools I work with.
           </p>
         </motion.div>
@@ -169,14 +161,29 @@ const SkillsSection = () => {
               className="group relative"
               variants={cardVariants}
             >
-              {/* Glow effect */}
+              {/* Glow effect on hover */}
               <div 
-                className="absolute -inset-0.5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"
+                className="absolute -inset-0.5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl pointer-events-none"
                 style={{ background: category.glowColor }}
               />
               
-              {/* Glassmorphism Card */}
-              <div className="relative h-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 transition-all duration-300 group-hover:bg-white/10 group-hover:border-white/20 group-hover:shadow-2xl">
+              {/* 100% Transparent Card */}
+              <div className="relative h-full bg-transparent hover:bg-white/[0.04] rounded-3xl p-6 transition-all duration-300 group-hover:shadow-2xl">
+                {/* Rotating rainbow border overlay */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-3xl"
+                  style={{
+                    padding: "1.5px",
+                    background:
+                      "conic-gradient(from var(--angle, 0deg), #ff4d00, #ff4500, #ffcc00, #00ff88, #00cfff, #a855f7, #ff0080, #ff4d00)",
+                    WebkitMask:
+                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    maskComposite: "exclude",
+                    animation: "spin-border 3s linear infinite",
+                  }}
+                />
                 {/* Category Header */}
                 <div className="flex items-center gap-3 mb-5">
                   <motion.div 
@@ -185,27 +192,27 @@ const SkillsSection = () => {
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <div className="w-full h-full bg-[#0d1525]/80 rounded-[14px] flex items-center justify-center backdrop-blur-sm">
-                      <category.icon className="w-6 h-6 text-white" />
+                    <div className="w-full h-full bg-black/40 rounded-[14px] flex items-center justify-center">
+                      <category.icon className="w-6 h-6 text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]" />
                     </div>
                   </motion.div>
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className="text-xl font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
                     {category.title}
                   </h3>
                 </div>
                 
-                {/* Skill Chips */}
+                {/* Skill Chips - 100% Transparent with visible borders */}
                 <div className="flex flex-wrap gap-2">
                   {category.skills.map((skill, skillIndex) => (
                     <motion.div
                       key={skill.name}
                       custom={skillIndex}
                       variants={chipVariants}
-                      className="group/chip flex items-center gap-2 px-3 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-sm font-medium text-white/90 transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:scale-105"
+                      className="group/chip flex items-center gap-2 px-3 py-2 bg-transparent hover:bg-white/10 border-[1.5px] border-white/60 hover:border-white rounded-xl text-sm font-medium text-white transition-all duration-300 hover:scale-105 shadow-sm"
                       whileHover={{ y: -2 }}
                     >
-                      <skill.icon className="w-4 h-4 text-primary/80 group-hover/chip:text-primary transition-colors" />
-                      <span>{skill.name}</span>
+                      <skill.icon className="w-4 h-4 text-glow-cyan group-hover/chip:text-primary transition-colors drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" />
+                      <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">{skill.name}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -213,7 +220,19 @@ const SkillsSection = () => {
             </motion.div>
           ))}
         </motion.div>
-      </div>
+</div>
+
+      {/* Inline keyframes for rotating border */}
+      <style>{`
+        @property --angle {
+          syntax: '<angle>';
+          initial-value: 0deg;
+          inherits: false;
+        }
+        @keyframes spin-border {
+          to { --angle: 360deg; }
+        }
+      `}</style>
     </section>
   );
 };

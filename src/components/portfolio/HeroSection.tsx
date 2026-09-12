@@ -1,151 +1,164 @@
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Download, Sparkles } from 'lucide-react';
-import profilePhoto from '@/assets/profile-photo.png';
+import React from 'react';
+import { ArrowRight, Download } from "lucide-react";
 
-const HeroSection = () => {
+const HeroSection: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center pt-20 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden bg-transparent"
     >
-      {/* Dark gradient background with grid pattern */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-[hsl(var(--primary)/_0.03)] to-background" />
-      <div className="absolute inset-0 grid-pattern" />
-      
-      {/* Animated glow orbs */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-blob" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-glow-purple/10 rounded-full blur-[100px] animate-blob" style={{ animationDelay: '2s' }} />
-      <div className="absolute top-1/2 right-1/3 w-[300px] h-[300px] bg-accent/10 rounded-full blur-[80px] animate-blob" style={{ animationDelay: '4s' }} />
-      
-      {/* Floating particles */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-2 h-2 bg-primary/40 rounded-full top-1/4 left-1/4 animate-float" />
-        <div className="absolute w-3 h-3 bg-accent/40 rounded-full top-1/3 right-1/3 animate-float" style={{ animationDelay: '1s' }} />
-        <div className="absolute w-2 h-2 bg-glow-purple/40 rounded-full bottom-1/4 left-1/3 animate-float" style={{ animationDelay: '2s' }} />
-        <div className="absolute w-4 h-4 bg-glow-cyan/30 rounded-full top-1/2 right-1/4 animate-float" style={{ animationDelay: '3s' }} />
-      </div>
+      {/* 100% Transparent Hero Container - zero darkening overlays */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
+        <div className="w-full max-w-2xl text-left">
+          
+          {/* Status Badge - 100% Transparent */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-transparent border border-primary/50 text-primary text-xs sm:text-sm font-medium mb-5 shadow-glow">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+            </span>
+            Available for Opportunities
+          </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <div className="order-2 lg:order-1 text-center lg:text-left">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 glass-pill border-primary/30 text-primary mb-6 animate-fade-up">
-              <Sparkles className="w-4 h-4" />
-              Welcome to My Portfolio
-            </div>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
-              Hello, I'm{' '}
-              <span className="relative">
-                <span className="text-gradient">Manish Yadav</span>
-                <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary via-glow-purple to-accent rounded-full" />
-              </span>
-            </h1>
-            
-            <div className="flex items-center justify-center lg:justify-start gap-3 mb-6 animate-fade-up" style={{ animationDelay: '0.15s' }}>
-              <span className="glass-pill border-primary/30 text-foreground font-semibold">
-                Software Developer
-              </span>
-              <span className="glass-pill border-accent/30 text-accent font-semibold">
-                AI Enthusiast
-              </span>
-            </div>
+          {/* Main Headline with Animated Conic Gradient */}
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-white mb-4 leading-none">
+            <span className="block text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-300 mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+              Hello, I'm
+            </span>
+            <span
+              className="inline-block drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]"
+              style={{
+                WebkitTextStroke: "1px transparent",
+                backgroundImage:
+                  "conic-gradient(from var(--angle, 0deg), #ff4d00, #ff4500, #ffcc00, #00ff88, #00cfff, #a855f7, #ff0080, #ff4d00)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                color: "transparent",
+                paintOrder: "stroke fill",
+                animation: "spin-border 3s linear infinite",
+              }}
+            >
+              Manish Yadav
+            </span>
+          </h1>
 
-            <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-fade-up" style={{ animationDelay: '0.2s' }}>
-              A passionate developer focused on building practical, real-world web solutions. 
-              Specializing in{' '}
-              <span className="text-primary font-semibold">Web Development</span>,{' '}
-              <span className="text-primary font-semibold">Java</span>,{' '}
-              <span className="text-accent font-semibold">DevOps</span> &{' '}
-              <span className="text-accent font-semibold">AI-driven solutions</span>.
-            </p>
+          {/* Sub-Badges - 100% Transparent */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
+            <span className="px-3 py-1 rounded-md text-xs sm:text-sm font-semibold bg-transparent border border-primary/50 text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+              Software Developer
+            </span>
+            <span className="px-3 py-1 rounded-md text-xs sm:text-sm font-semibold bg-transparent border border-accent/50 text-accent drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+              AI Enthusiast
+            </span>
+            <span className="px-3 py-1 rounded-md text-xs sm:text-sm font-semibold bg-transparent border border-glow-cyan/50 text-glow-cyan drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+              Java & Cloud
+            </span>
+          </div>
 
-            {/* Stats with glassmorphism */}
-            <div className="flex justify-center lg:justify-start gap-4 mb-8 animate-fade-up" style={{ animationDelay: '0.3s' }}>
-              {[
-                { value: '10+', label: 'Internships' },
-                { value: '25+', label: 'Certifications' },
-                { value: '5+', label: 'Projects' },
-              ].map((stat) => (
-                <div 
-                  key={stat.label}
-                  className="glass-card-hover px-6 py-4 text-center"
-                >
-                  <div className="text-2xl md:text-3xl font-bold text-gradient">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs md:text-sm text-muted-foreground mt-1">{stat.label}</div>
+          {/* Description */}
+          <p className="text-base sm:text-lg text-slate-200 mb-8 max-w-xl leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+            A passionate developer building practical, high-performance web solutions.
+            Specializing in <span className="text-primary font-semibold">Web Development</span>,{" "}
+            <span className="text-primary font-semibold">Java</span>,{" "}
+            <span className="text-accent font-semibold">DevOps</span> &{" "}
+            <span className="text-accent font-semibold">AI-driven solutions</span>.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-wrap items-center gap-4 mb-10">
+            {/* Resume Button - Completely transparent with rotating rainbow border */}
+            <a
+              href="/Manish_Yadav_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative inline-flex items-center justify-center px-7 py-3 rounded-xl text-sm sm:text-base font-medium text-white group overflow-hidden bg-transparent hover:bg-white/10 transition-all duration-300 hover:scale-105"
+            >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 rounded-xl"
+                style={{
+                  padding: "1.5px",
+                  background:
+                    "conic-gradient(from var(--angle, 0deg), #ff0080, #ff4500, #ffcc00, #00ff88, #00cfff, #a855f7, #ff0080)",
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  maskComposite: "exclude",
+                  animation: "spin-border 3s linear infinite",
+                }}
+              />
+              <span className="relative z-10 flex items-center gap-2">
+                Resume
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </a>
+
+            {/* Save Contact Button - Completely transparent with rotating rainbow border */}
+            <a
+              href="/contact.vcf"
+              download="Manish_Yadav_Contact.vcf"
+              className="relative inline-flex items-center justify-center px-7 py-3 rounded-xl text-sm sm:text-base font-medium text-white group overflow-hidden bg-transparent hover:bg-white/10 transition-all duration-300 hover:scale-105"
+            >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 rounded-xl"
+                style={{
+                  padding: "1.5px",
+                  background:
+                    "conic-gradient(from var(--angle, 0deg), #ff0080, #ff4500, #ffcc00, #00ff88, #00cfff, #a855f7, #ff0080)",
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  maskComposite: "exclude",
+                  animation: "spin-border 3s linear infinite",
+                }}
+              />
+              <span className="relative z-10 flex items-center gap-2">
+                <Download className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                Save Contact
+              </span>
+            </a>
+          </div>
+
+          {/* Quick Stats - 100% Transparent */}
+          <div className="grid grid-cols-3 gap-3 max-w-md">
+            {[
+              { value: "10+", label: "Internships", link: "#experience" },
+              { value: "25+", label: "Certifications", link: "#certifications" },
+              { value: "5+", label: "Projects", link: "#projects" },
+            ].map((stat) => (
+              <a
+                key={stat.label}
+                href={stat.link}
+                className="p-3 rounded-xl text-center block cursor-pointer bg-transparent border border-white/15 hover:border-primary/50 hover:bg-white/[0.05] transition-all"
+              >
+                <div className="text-xl sm:text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+                  {stat.value}
                 </div>
-              ))}
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap justify-center lg:justify-start gap-4 animate-fade-up" style={{ animationDelay: '0.4s' }}>
-              <Button 
-                size="lg" 
-                asChild 
-                className="group bg-gradient-to-r from-primary to-glow-purple hover:from-primary/90 hover:to-glow-purple/90 shadow-glow text-white px-8 py-6"
-              >
-                <a href="#projects">
-                  View Projects 
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                asChild 
-                className="group glass-card border-primary/30 hover:border-primary/50 hover:bg-primary/10 px-8 py-6"
-              >
-                <a href="#contact">
-                  <Download className="mr-2 w-4 h-4" />
-                  Contact Me
-                </a>
-              </Button>
-            </div>
+                <div className="text-[11px] sm:text-xs text-slate-300 mt-0.5">
+                  {stat.label}
+                </div>
+              </a>
+            ))}
           </div>
 
-          {/* Right Content - Profile Image */}
-          <div className="order-1 lg:order-2 flex justify-center animate-fade-up">
-            <div className="relative">
-              {/* Outer glow rings */}
-              <div className="absolute -inset-8 bg-gradient-to-br from-primary/30 via-glow-purple/20 to-accent/30 rounded-full blur-3xl animate-pulse" />
-              <div className="absolute -inset-4 bg-gradient-to-tr from-glow-cyan/20 via-primary/20 to-glow-purple/20 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
-              
-              {/* Rotating border */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-glow-purple to-accent rounded-full animate-spin-slow opacity-60" />
-              
-              {/* Main image container */}
-              <div className="relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-[hsl(var(--glass-border))] shadow-glow-lg">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-glow-purple/20" />
-                <img
-                  src={profilePhoto}
-                  alt="Manish Yadav - Software Developer"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Floating badge with glassmorphism */}
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 glass-card px-6 py-3 flex items-center gap-2 shadow-glow">
-                <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500" />
-                </span>
-                <span className="font text-sm text-foreground">Available for Work</span>
-              </div>
-
-              {/* Decorative floating elements */}
-              <div className="absolute -top-4 -right-4 w-12 h-12 glass-card flex items-center justify-center animate-float shadow-glow">
-                <span className="text-xl">💻</span>
-              </div>
-              <div className="absolute top-1/4 -left-6 w-10 h-10 glass-card flex items-center justify-center animate-float" style={{ animationDelay: '1s' }}>
-                <span className="text-lg">🚀</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
+
+
+
+      {/* Conic Gradient Border Animation Keyframes */}
+      <style>{`
+        @property --angle {
+          syntax: '<angle>';
+          initial-value: 0deg;
+          inherits: false;
+        }
+        @keyframes spin-border {
+          from { --angle: 0deg; }
+          to { --angle: 360deg; }
+        }
+      `}</style>
     </section>
   );
 };
