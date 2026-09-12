@@ -491,9 +491,9 @@ const AIChat = () => {
         {/* Messages */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 md:px-6 py-6 space-y-4">
 
-          {/* Welcome + Suggestions */}
+          {/* Welcome Intro */}
           {messages.length === 0 && (
-            <div className="flex flex-col items-center justify-center mt-20 text-center gap-4">
+            <div className="flex flex-col items-center justify-center min-h-[55vh] text-center gap-4 py-8">
               <img
                 src={aira}
                 alt="MS AIRA"
@@ -501,18 +501,7 @@ const AIChat = () => {
                 className="w-40 h-40 rounded-full object-cover cursor-pointer border-4 border-purple-500 shadow-[0_0_40px_rgba(168,85,247,0.6)] animate-float hover:scale-105 transition"
               />
               <h3 className="text-xl font-semibold text-purple-400">MS AIRA</h3>
-              <p className="text-gray-400 max-w-md">Click on me for a quick introduction.</p>
-              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl w-full">
-  {SUGGESTED_QUESTIONS.slice(0, window.innerWidth < 640 ? 4 : 6).map((q) => (
-                  <button
-                    key={q}
-                    onClick={() => askAI(q)}
-                    className="text-left px-4 py-3 rounded-xl text-sm bg-zinc-900 border border-white/10 hover:border-purple-500 hover:text-purple-400 transition"
-                  >
-                    {q}
-                  </button>
-                ))}
-              </div>
+              <p className="text-gray-400 max-w-md text-sm md:text-base">Click on me for a quick introduction.</p>
             </div>
           )}
 
