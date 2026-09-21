@@ -1,162 +1,249 @@
-import React from 'react';
-import { ArrowRight, Download } from "lucide-react";
+import React, { useState, useEffect, useRef } from 'react';
+import { ArrowRight, Download } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
+  const [isMuted] = useState<boolean>(true);
+  const [mounted, setMounted] = useState<boolean>(false);
+  const containerRef = useRef<HTMLElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [starStyle, setStarStyle] = useState<{
+    x: number;
+    y: number;
+    size: number;
+    visible: boolean;
+  }>({
+    x: 0,
+    y: 0,
+    size: 0,
+    visible: false,
+  });
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.75;
+      videoRef.current.play().catch(() => { });
+    }
+    // Trigger smooth staggered entrance on mount
+    const timer = setTimeout(() => setMounted(true), 250);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const updatePosition = () => {
+      if (!containerRef.current) return;
+      const W = window.innerWidth || containerRef.current.clientWidth;
+      const H = window.innerHeight || containerRef.current.clientHeight;
+      if (!W || !H) return;
+
+      // Lock container to exact innerHeight so mobile address bars don't cause overflow
+      containerRef.current.style.height = `${H}px`;
+      containerRef.current.style.minHeight = `${H}px`;
+
+      const videoAspect = 16 / 9;
+      const containerAspect = W / H;
+
+      let renderedW: number;
+      let renderedH: number;
+      let videoLeft = 0;
+      let videoTop = 0;
+
+      if (containerAspect >= videoAspect) {
+        // Viewport is wider than 16:9 - video fits width, centers vertically
+        renderedW = W;
+        renderedH = W / videoAspect;
+        videoTop = (H - renderedH) / 2;
+      } else {
+        // Viewport is taller than 16:9 - video fits height, centers horizontally
+        renderedH = H;
+        renderedW = H * videoAspect;
+        videoLeft = (W - renderedW) / 2;
+      }
+
+      // Measured from 4K video source (3840 x 2160):
+      // Right watermark star center:
+      // X = 3479.5 / 3840 = 0.90612 of video width
+      // Y = 1799.5 / 2160 = 0.83310 of video height
+      //
+      // Mirrored left star center (equal height & equal distance from edges):
+      // X = (1 - 0.90612) = 0.09388 of video width
+      // Y = 0.83310 of video height (exact same vertical line as right star)
+      const rawX = videoLeft + renderedW * 0.09388;
+      const rawY = videoTop + renderedH * 0.83310;
+      const scale = renderedH / 1080;
+
+      const isMobile = W < 640;
+      const finalX = Math.max(32, rawX);
+      const finalY = rawY;
+      // In 1080p, the container is 90px holding the exact 74px star:
+      const finalSize = Math.round(90 * scale);
+
+      setStarStyle({
+        x: Math.round(finalX),
+        y: Math.round(finalY),
+        size: finalSize,
+        visible: !isMobile,
+      });
+    };
+
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('orientationchange', updatePosition);
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('orientationchange', updatePosition);
+    };
+  }, []);
+
   return (
     <section
+      ref={containerRef}
       id="home"
-      className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden bg-transparent"
+      className="relative w-full h-[100svh] h-[100dvh] min-h-[100svh] min-h-[100dvh] flex items-center justify-center overflow-hidden bg-black select-none"
+      style={{ minHeight: '100dvh', height: '100dvh' }}
     >
-      {/* 100% Transparent Hero Container - zero darkening overlays */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
-        <div className="w-full max-w-2xl text-left">
-          
-          {/* Status Badge - 100% Transparent */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-transparent border border-primary/50 text-primary text-xs sm:text-sm font-medium mb-5 shadow-glow">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
-            </span>
-            Available for Opportunities
-          </div>
+      {/* ========================================================
+          TRUE FULLSCREEN CINEMATIC 4K VIDEO HERO
+          Pure edge-to-edge cinematic video of Manish Yadav.
+          Contains:
+          - Real authentic studio footage of Manish
+          - Smooth seamless continuous loop
+          ======================================================== */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden z-0 bg-black">
+        <video
+          ref={videoRef}
+          key="hero-exact-user-walk-clean-v5"
+          autoPlay
+          loop
+          muted={isMuted}
+          playsInline
+          preload="auto"
+          onLoadedMetadata={(e) => {
+            e.currentTarget.playbackRate = 0.75;
+          }}
+          onPlay={(e) => {
+            e.currentTarget.playbackRate = 0.75;
+          }}
+          onRateChange={(e) => {
+            if (e.currentTarget.playbackRate !== 0.75) {
+              e.currentTarget.playbackRate = 0.75;
+            }
+          }}
+          className="w-full h-full object-cover object-center"
+        >
+          <source src="/hero-cinematic-intro-4k.mp4?v=clean-v5" type="video/mp4" media="(min-width: 1024px)" />
+          <source src="/hero-cinematic-intro.mp4?v=clean-v5" type="video/mp4" />
+        </video>
 
-          {/* Main Headline with Animated Conic Gradient */}
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-white mb-4 leading-none">
-            <span className="block text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-300 mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-              Hello, I'm
-            </span>
-            <span
-              className="inline-block drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]"
-              style={{
-                WebkitTextStroke: "1px transparent",
-                backgroundImage:
-                  "conic-gradient(from var(--angle, 0deg), #ff4d00, #ff4500, #ffcc00, #00ff88, #00cfff, #a855f7, #ff0080, #ff4d00)",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                color: "transparent",
-                paintOrder: "stroke fill",
-                animation: "spin-border 3s linear infinite",
-              }}
-            >
-              Manish Yadav
-            </span>
+        {/* Ultra-subtle bottom edge blend for page transition and movie-poster contrast */}
+        <div className="absolute bottom-0 inset-x-0 h-40 sm:h-48 md:h-56 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />
+      </div>
+
+      {/* ========================================================
+          CINEMATIC MOVIE POSTER TITLE (Anchored at the Bottom)
+          3-Row Theatrical Poster Typography:
+          - Row 1: WELCOME TO MY WORLD
+          - Row 2: SOFTWARE ENGINEER
+          - Row 3: MANISH YADAV (Grand Crimson Red Blockbuster Title)
+          Centered cleanly between the symmetrical stars.
+          Lifted safely above mobile navigation / home bars.
+          ======================================================== */}
+      <div className="absolute bottom-8 xs:bottom-10 sm:bottom-10 md:bottom-10 lg:bottom-12 inset-x-0 z-20 flex flex-col items-center justify-center px-4 pb-[max(env(safe-area-inset-bottom),10px)] text-center pointer-events-none select-none">
+        {/* Row 1: WELCOME TO MY WORLD */}
+        <div
+          className="transition-all"
+          style={{
+            transitionDuration: '2200ms',
+            transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
+            transitionDelay: '2800ms',
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(12px)',
+            willChange: 'opacity, transform',
+          }}
+        >
+          <span
+            className="block whitespace-nowrap text-[10px] xs:text-[11px] sm:text-xs md:text-sm lg:text-[15px] font-bold tracking-[0.14em] sm:tracking-[0.18em] md:tracking-[0.22em] text-white/95 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] select-none"
+            style={{ wordSpacing: '-0.04em' }}
+          >
+            WELCOME TO MY WORLD
+          </span>
+        </div>
+
+        {/* Row 2: SOFTWARE ENGINEER */}
+        <div
+          className="transition-all mt-0.5 sm:mt-1"
+          style={{
+            transitionDuration: '2200ms',
+            transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
+            transitionDelay: '3050ms',
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(12px)',
+            willChange: 'opacity, transform',
+          }}
+        >
+          <span
+            className="block whitespace-nowrap text-[9px] xs:text-[10px] sm:text-[11px] md:text-xs lg:text-[13px] font-semibold tracking-[0.16em] sm:tracking-[0.2em] md:tracking-[0.24em] text-white/80 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] select-none"
+            style={{ wordSpacing: '-0.04em' }}
+          >
+            SOFTWARE ENGINEER
+          </span>
+        </div>
+
+        {/* Row 3: MANISH YADAV */}
+        <div
+          className="transition-all mt-1 sm:mt-1.5 md:mt-2"
+          style={{
+            transitionDuration: '2800ms',
+            transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
+            transitionDelay: '1800ms',
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+            willChange: 'opacity, transform',
+          }}
+        >
+          <h1
+            className="block font-black uppercase leading-[0.88] select-none text-[#e50914] drop-shadow-[0_10px_35px_rgba(0,0,0,0.98)] drop-shadow-[0_0_50px_rgba(229,9,20,0.52)] animate-[crimsonGlow_4s_ease-in-out_infinite]"
+            style={{
+              fontFamily: "'Anton', 'Bebas Neue', Impact, sans-serif",
+              fontSize: 'clamp(2.1rem, 7.8vw, 6.6rem)',
+              letterSpacing: '0.035em',
+              wordSpacing: '0.15em',
+              animationDelay: '5200ms',
+            }}
+          >
+            MANISH YADAV
           </h1>
-
-          {/* Sub-Badges - 100% Transparent */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
-            <span className="px-3 py-1 rounded-md text-xs sm:text-sm font-semibold bg-transparent border border-primary/50 text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-              Software Developer
-            </span>
-            <span className="px-3 py-1 rounded-md text-xs sm:text-sm font-semibold bg-transparent border border-accent/50 text-accent drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-              AI Enthusiast
-            </span>
-            <span className="px-3 py-1 rounded-md text-xs sm:text-sm font-semibold bg-transparent border border-glow-cyan/50 text-glow-cyan drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-              Java & Cloud
-            </span>
-          </div>
-
-          {/* Description */}
-          <p className="text-base sm:text-lg text-slate-200 mb-8 max-w-xl leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-            A passionate developer building practical, high-performance web solutions.
-            Specializing in <span className="text-primary font-semibold">Web Development</span>,{" "}
-            <span className="text-primary font-semibold">Java</span>,{" "}
-            <span className="text-accent font-semibold">DevOps</span> &{" "}
-            <span className="text-accent font-semibold">AI-driven solutions</span>.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center gap-4 mb-10">
-            {/* Resume Button - Completely transparent with rotating rainbow border */}
-            <a
-              href="/Manish_Yadav_Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative inline-flex items-center justify-center px-7 py-3 rounded-xl text-sm sm:text-base font-medium text-white group overflow-hidden bg-transparent hover:bg-white/10 transition-all duration-300 hover:scale-105"
-            >
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-xl"
-                style={{
-                  padding: "1.5px",
-                  background:
-                    "conic-gradient(from var(--angle, 0deg), #ff0080, #ff4500, #ffcc00, #00ff88, #00cfff, #a855f7, #ff0080)",
-                  WebkitMask:
-                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  WebkitMaskComposite: "xor",
-                  maskComposite: "exclude",
-                  animation: "spin-border 3s linear infinite",
-                }}
-              />
-              <span className="relative z-10 flex items-center gap-2">
-                Resume
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </span>
-            </a>
-
-            {/* Save Contact Button - Completely transparent with rotating rainbow border */}
-            <a
-              href="/contact.vcf"
-              download="Manish_Yadav_Contact.vcf"
-              className="relative inline-flex items-center justify-center px-7 py-3 rounded-xl text-sm sm:text-base font-medium text-white group overflow-hidden bg-transparent hover:bg-white/10 transition-all duration-300 hover:scale-105"
-            >
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-xl"
-                style={{
-                  padding: "1.5px",
-                  background:
-                    "conic-gradient(from var(--angle, 0deg), #ff0080, #ff4500, #ffcc00, #00ff88, #00cfff, #a855f7, #ff0080)",
-                  WebkitMask:
-                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                  WebkitMaskComposite: "xor",
-                  maskComposite: "exclude",
-                  animation: "spin-border 3s linear infinite",
-                }}
-              />
-              <span className="relative z-10 flex items-center gap-2">
-                <Download className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
-                Save Contact
-              </span>
-            </a>
-          </div>
-
-          {/* Quick Stats - 100% Transparent */}
-          <div className="grid grid-cols-3 gap-3 max-w-md">
-            {[
-              { value: "10+", label: "Internships", link: "#experience" },
-              { value: "25+", label: "Certifications", link: "#certifications" },
-              { value: "5+", label: "Projects", link: "#projects" },
-            ].map((stat) => (
-              <a
-                key={stat.label}
-                href={stat.link}
-                className="p-3 rounded-xl text-center block cursor-pointer bg-transparent border border-white/15 hover:border-primary/50 hover:bg-white/[0.05] transition-all"
-              >
-                <div className="text-xl sm:text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
-                  {stat.value}
-                </div>
-                <div className="text-[11px] sm:text-xs text-slate-300 mt-0.5">
-                  {stat.label}
-                </div>
-              </a>
-            ))}
-          </div>
-
         </div>
       </div>
 
+      {/* Symmetrical Left Star Logo: Hidden on mobile screens, visible on tablets and desktops */}
+      {starStyle.visible && (
+        <div
+          className="hidden sm:block absolute z-20 pointer-events-none select-none"
+          style={{
+            left: `${starStyle.x}px`,
+            top: `${starStyle.y}px`,
+            transform: 'translate(-50%, -50%)',
+            width: `${starStyle.size}px`,
+            height: `${starStyle.size}px`,
+          }}
+        >
+          <img
+            src="/hero-left-star.png"
+            alt="Hero Left Star"
+            className="w-full h-full object-contain filter drop-shadow-[0_0_6px_rgba(255,255,255,0.06)]"
+            draggable={false}
+          />
+        </div>
+      )}
 
-
-      {/* Conic Gradient Border Animation Keyframes */}
       <style>{`
-        @property --angle {
-          syntax: '<angle>';
-          initial-value: 0deg;
-          inherits: false;
-        }
-        @keyframes spin-border {
-          from { --angle: 0deg; }
-          to { --angle: 360deg; }
+        @keyframes crimsonGlow {
+          0%, 100% {
+            filter: drop-shadow(0 8px 30px rgba(0,0,0,0.95)) drop-shadow(0 0 35px rgba(229,9,20,0.4));
+          }
+          50% {
+            filter: drop-shadow(0 8px 30px rgba(0,0,0,0.95)) drop-shadow(0 0 55px rgba(229,9,20,0.65));
+          }
         }
       `}</style>
     </section>

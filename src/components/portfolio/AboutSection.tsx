@@ -1,4 +1,4 @@
-import { GraduationCap, Target, Code, Sparkles, ArrowRight } from 'lucide-react';
+import { GraduationCap, Target, Code, Sparkles, ArrowRight, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const aboutCards = [
@@ -91,6 +91,63 @@ const AboutSection = () => {
       <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-accent/10 rounded-full blur-[80px]" />
 
       <div className="container mx-auto px-4 relative z-10">
+        {/* Quick Actions & Stats Bar — Positioned at the top of the Second Page */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-12 sm:mb-16 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 md:gap-4 lg:gap-5"
+        >
+          {/* Resume Button */}
+          <a
+            href="/Manish_Yadav_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-md border border-white/20 hover:border-white/40 text-xs sm:text-sm font-medium text-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg group"
+          >
+            <span>Resume</span>
+            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
+          </a>
+
+          {/* Save Contact Button */}
+          <a
+            href="/contact.vcf"
+            download="Manish_Yadav_Contact.vcf"
+            className="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-md border border-white/20 hover:border-white/40 text-xs sm:text-sm font-medium text-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg group"
+          >
+            <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:scale-110 transition-transform" />
+            <span>Save Contact</span>
+          </a>
+
+          {/* 10+ Internships */}
+          <a
+            href="#experience"
+            className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-md border border-white/15 hover:border-white/30 text-xs sm:text-sm transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg"
+          >
+            <span className="text-[#ff4d4d] font-bold tracking-wide">10+</span>
+            <span className="text-slate-200 font-medium">Internships</span>
+          </a>
+
+          {/* 25+ Certifications */}
+          <a
+            href="#certifications"
+            className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-md border border-white/15 hover:border-white/30 text-xs sm:text-sm transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg"
+          >
+            <span className="text-[#ff4d4d] font-bold tracking-wide">25+</span>
+            <span className="text-slate-200 font-medium">Certifications</span>
+          </a>
+
+          {/* 5+ Projects */}
+          <a
+            href="#projects"
+            className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-md border border-white/15 hover:border-white/30 text-xs sm:text-sm transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg"
+          >
+            <span className="text-[#ff4d4d] font-bold tracking-wide">5+</span>
+            <span className="text-slate-200 font-medium">Projects</span>
+          </a>
+        </motion.div>
+
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left - Cards Grid */}
           <motion.div 
@@ -168,9 +225,9 @@ const AboutSection = () => {
               </div>
             </motion.div>
 
-            {/* Let's Connect CTA Button - 100% Transparent with Rotating Rainbow Border */}
+            {/* My Work CTA Button - 100% Transparent with Rotating Rainbow Border */}
             <a 
-              href="#contact" 
+              href="#projects" 
               className="relative inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-white group overflow-hidden bg-transparent hover:bg-white/10 transition-all duration-300 rounded-xl hover:scale-105 shadow-glow"
             >
               {/* Rotating conic-gradient border layer */}
@@ -191,7 +248,7 @@ const AboutSection = () => {
 
               {/* Button content */}
               <span className="relative z-10 flex items-center gap-2 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                Let's Connect
+                My Work
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
 

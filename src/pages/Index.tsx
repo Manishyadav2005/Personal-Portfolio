@@ -12,6 +12,7 @@ import ContactSection from '@/components/portfolio/ContactSection';
 import Footer from '@/components/portfolio/Footer';
 import FloatingAIButton from "@/components/portfolio/FloatingAIButton";
 import ResearchSection from "@/components/portfolio/ResearchSection";
+import BeyondTheCodeSection from "@/components/portfolio/BeyondTheCodeSection";
 
 const Index = () => {
   return (
@@ -51,6 +52,7 @@ const Index = () => {
         <SkillsSection />
         <ExperienceSection />
         <ProjectsSection />
+        <BeyondTheCodeSection />
         <ResearchSection /> 
         <ServicesSection />
         <CertificationsSection />

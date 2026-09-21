@@ -1,5 +1,4 @@
 import Chatbot from "./pages/Chatbot";
-import FloatingAIButton from "./components/portfolio/FloatingAIButton";
 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -9,6 +8,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 
 import Index from "./pages/Index";
+import Projects from "./pages/Projects";
+import Admin from "./pages/Admin";
+import BeyondTheCode from "./pages/BeyondTheCode";
+import Certifications from "./pages/Certifications";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +27,12 @@ const App = () => (
           {/* Routes */}
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/work" element={<Projects />} />
+            <Route path="/beyond-the-code" element={<BeyondTheCode />} />
+            <Route path="/beyond-code" element={<BeyondTheCode />} />
+            <Route path="/certifications" element={<Certifications />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="/chatbot" element={<Chatbot />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

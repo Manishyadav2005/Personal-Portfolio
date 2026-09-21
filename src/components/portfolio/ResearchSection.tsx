@@ -31,22 +31,6 @@ const ResearchSection = () => {
 
         {/* 100% Transparent Research Card */}
         <div className="relative p-6 lg:p-8 flex flex-col lg:flex-row gap-8 items-center bg-transparent hover:bg-white/[0.03] rounded-3xl overflow-hidden transition-all duration-300 shadow-2xl">
-          {/* Rotating rainbow border overlay */}
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 rounded-3xl z-10"
-            style={{
-              padding: "1.5px",
-              background:
-                "conic-gradient(from var(--angle, 0deg), #ff4d00, #ff4500, #ffcc00, #00ff88, #00cfff, #a855f7, #ff0080, #ff4d00)",
-              WebkitMask:
-                "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-              WebkitMaskComposite: "xor",
-              maskComposite: "exclude",
-              animation: "spin-border 3s linear infinite",
-            }}
-          />
-
           {/* Image */}
           <div className="w-full lg:w-1/2 relative z-20">
             <img

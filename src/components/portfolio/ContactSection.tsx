@@ -107,20 +107,6 @@ const ContactSection = () => {
             viewport={{ once: true }} 
             className="relative rounded-3xl p-8 bg-transparent hover:bg-white/[0.03] transition-all duration-300 shadow-2xl"
           >
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 rounded-3xl z-10"
-              style={{
-                padding: "1.5px",
-                background:
-                  "conic-gradient(from var(--angle, 0deg), #ff4d00, #ff4500, #ffcc00, #00ff88, #00cfff, #a855f7, #ff0080, #ff4d00)",
-                WebkitMask:
-                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
-                maskComposite: "exclude",
-                animation: "spin-border 3s linear infinite",
-              }}
-            />
             <h3 className="text-xl lg:text-2xl font-bold text-white mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)]">Send a Message</h3>
             <form onSubmit={handleSubmit} className="space-y-6 relative z-20">
               <div>
