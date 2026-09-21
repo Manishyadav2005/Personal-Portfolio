@@ -147,7 +147,7 @@ const HeroSection: React.FC = () => {
           Centered cleanly between the symmetrical stars.
           Lifted safely above mobile navigation / home bars.
           ======================================================== */}
-      <div className="absolute bottom-3 xs:bottom-4 sm:bottom-4 md:bottom-5 lg:bottom-6 inset-x-0 z-20 flex flex-col items-center justify-center px-4 pb-[env(safe-area-inset-bottom,0px)] text-center pointer-events-none select-none">
+      <div className="absolute bottom-8 xs:bottom-10 sm:bottom-10 md:bottom-10 lg:bottom-12 inset-x-0 z-20 flex flex-col items-center justify-center px-4 pb-[max(env(safe-area-inset-bottom),10px)] text-center pointer-events-none select-none">
         {/* Row 1: WELCOME TO MY WORLD */}
         <div
           className="transition-all"
