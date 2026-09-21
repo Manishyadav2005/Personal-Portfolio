@@ -79,16 +79,6 @@ const Navbar = () => {
           : '-translate-y-full opacity-0 pointer-events-none'
       }`}
     >
-      {/* Sleek Animated Full-Width Rainbow Border on Bottom */}
-      <div
-        className="absolute bottom-0 inset-x-0 h-[2px] pointer-events-none opacity-90"
-        style={{
-          background:
-            'linear-gradient(90deg, #ff4d00, #ffcc00, #00ff88, #00cfff, #a855f7, #ff0080, #ff4d00)',
-          backgroundSize: '200% 100%',
-          animation: 'rainbow-flow 6s linear infinite',
-        }}
-      />
 
       {/* Full-Width Navigation Content Bar */}
       <nav className="w-full px-4 sm:px-8 lg:px-12 py-3 sm:py-3.5 flex items-center justify-between gap-4">
