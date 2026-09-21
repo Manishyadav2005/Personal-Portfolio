@@ -161,8 +161,8 @@ const HeroSection: React.FC = () => {
           }}
         >
           <span
-            className="block whitespace-nowrap text-[10px] xs:text-[11px] sm:text-xs md:text-sm lg:text-[15px] font-bold tracking-[0.14em] sm:tracking-[0.18em] md:tracking-[0.22em] text-white/95 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] select-none"
-            style={{ wordSpacing: '-0.04em' }}
+            className="block whitespace-nowrap text-[10px] xs:text-[11px] sm:text-xs md:text-sm lg:text-[15px] font-bold tracking-[0.14em] sm:tracking-[0.18em] md:tracking-[0.22em] leading-tight text-white/95 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] select-none"
+            style={{ wordSpacing: '-0.05em' }}
           >
             WELCOME TO MY WORLD
           </span>
@@ -170,7 +170,7 @@ const HeroSection: React.FC = () => {
 
         {/* Row 2: SOFTWARE ENGINEER */}
         <div
-          className="transition-all mt-0.5 sm:mt-1"
+          className="transition-all mt-0.5"
           style={{
             transitionDuration: '2200ms',
             transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
@@ -181,8 +181,8 @@ const HeroSection: React.FC = () => {
           }}
         >
           <span
-            className="block whitespace-nowrap text-[9px] xs:text-[10px] sm:text-[11px] md:text-xs lg:text-[13px] font-semibold tracking-[0.16em] sm:tracking-[0.2em] md:tracking-[0.24em] text-white/80 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] select-none"
-            style={{ wordSpacing: '-0.04em' }}
+            className="block whitespace-nowrap text-[9px] xs:text-[10px] sm:text-[11px] md:text-xs lg:text-[13px] font-semibold tracking-[0.16em] sm:tracking-[0.2em] md:tracking-[0.24em] leading-tight text-white/80 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] select-none"
+            style={{ wordSpacing: '-0.05em' }}
           >
             SOFTWARE ENGINEER
           </span>
@@ -190,7 +190,7 @@ const HeroSection: React.FC = () => {
 
         {/* Row 3: MANISH YADAV */}
         <div
-          className="transition-all mt-1 sm:mt-1.5 md:mt-2"
+          className="transition-all mt-0.5 sm:mt-0.5 md:mt-1"
           style={{
             transitionDuration: '2800ms',
             transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
@@ -206,7 +206,7 @@ const HeroSection: React.FC = () => {
               fontFamily: "'Anton', 'Bebas Neue', Impact, sans-serif",
               fontSize: 'clamp(2.1rem, 7.8vw, 6.6rem)',
               letterSpacing: '0.035em',
-              wordSpacing: '0.15em',
+              wordSpacing: '0.06em',
               animationDelay: '5200ms',
             }}
           >
