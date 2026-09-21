@@ -147,7 +147,7 @@ const HeroSection: React.FC = () => {
           Centered cleanly between the symmetrical stars.
           Lifted safely above mobile navigation / home bars.
           ======================================================== */}
-      <div className="absolute bottom-8 xs:bottom-10 sm:bottom-10 md:bottom-10 lg:bottom-12 inset-x-0 z-20 flex flex-col items-center justify-center px-4 pb-[max(env(safe-area-inset-bottom),10px)] text-center pointer-events-none select-none">
+      <div className="absolute bottom-4 xs:bottom-5 sm:bottom-5 md:bottom-6 lg:bottom-7 inset-x-0 z-20 flex flex-col items-center justify-center px-4 pb-[env(safe-area-inset-bottom,0px)] text-center pointer-events-none select-none">
         {/* Row 1: WELCOME TO MY WORLD */}
         <div
           className="transition-all"
@@ -161,7 +161,7 @@ const HeroSection: React.FC = () => {
           }}
         >
           <span
-            className="block whitespace-nowrap text-[10px] xs:text-[11px] sm:text-xs md:text-sm lg:text-[15px] font-bold tracking-[0.14em] sm:tracking-[0.18em] md:tracking-[0.22em] leading-tight text-white/95 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] select-none"
+            className="block whitespace-nowrap text-[10px] xs:text-[11px] sm:text-xs md:text-sm lg:text-[15px] font-bold tracking-[0.14em] sm:tracking-[0.18em] md:tracking-[0.22em] leading-none text-white/95 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] select-none"
             style={{ wordSpacing: '-0.05em' }}
           >
             WELCOME TO MY WORLD
@@ -170,7 +170,7 @@ const HeroSection: React.FC = () => {
 
         {/* Row 2: SOFTWARE ENGINEER */}
         <div
-          className="transition-all mt-0.5"
+          className="transition-all mt-1 sm:mt-1.5"
           style={{
             transitionDuration: '2200ms',
             transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
@@ -181,7 +181,7 @@ const HeroSection: React.FC = () => {
           }}
         >
           <span
-            className="block whitespace-nowrap text-[9px] xs:text-[10px] sm:text-[11px] md:text-xs lg:text-[13px] font-semibold tracking-[0.16em] sm:tracking-[0.2em] md:tracking-[0.24em] leading-tight text-white/80 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] select-none"
+            className="block whitespace-nowrap text-[9px] xs:text-[10px] sm:text-[11px] md:text-xs lg:text-[13px] font-semibold tracking-[0.16em] sm:tracking-[0.2em] md:tracking-[0.24em] leading-none text-white/80 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] select-none"
             style={{ wordSpacing: '-0.05em' }}
           >
             SOFTWARE ENGINEER
@@ -190,7 +190,7 @@ const HeroSection: React.FC = () => {
 
         {/* Row 3: MANISH YADAV */}
         <div
-          className="transition-all mt-0.5 sm:mt-0.5 md:mt-1"
+          className="transition-all -mt-0.5 sm:-mt-1 md:-mt-1.5"
           style={{
             transitionDuration: '2800ms',
             transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
@@ -201,7 +201,7 @@ const HeroSection: React.FC = () => {
           }}
         >
           <h1
-            className="block font-black uppercase leading-[0.88] select-none text-[#e50914] drop-shadow-[0_10px_35px_rgba(0,0,0,0.98)] drop-shadow-[0_0_50px_rgba(229,9,20,0.52)] animate-[crimsonGlow_4s_ease-in-out_infinite]"
+            className="block font-black uppercase leading-[0.85] select-none text-[#e50914] drop-shadow-[0_10px_35px_rgba(0,0,0,0.98)] drop-shadow-[0_0_50px_rgba(229,9,20,0.52)] animate-[crimsonGlow_4s_ease-in-out_infinite]"
             style={{
               fontFamily: "'Anton', 'Bebas Neue', Impact, sans-serif",
               fontSize: 'clamp(2.1rem, 7.8vw, 6.6rem)',
